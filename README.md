@@ -3,11 +3,13 @@
 Architecture and design notes for **regulated enterprise voice services** (banking, private banking, institutional environments).
 
 This repository is a **narrative layer**:
+
 - it explains *why* certain architecture choices are made,
 - it captures delivery trade‑offs and operating assumptions,
 - it remains **anonymized** (no client identifiers, no numbers, no tenant data).
 
 It is **not** a tooling repo and it intentionally contains:
+
 - no scripts,
 - no runbooks that perform tenant changes,
 - no customer‑specific configuration.
@@ -28,7 +30,14 @@ If you want technical proof, see `04-proof-links/01-technical-portfolio-entrypoi
 ## Scope and intent
 
 All content in this repository is derived from real delivery work.
-The current focus is on architectural decisions and operating principles rather than extended storytelling.
+
+The focus here is on architectural decisions, operating boundaries, and design principles.
+Detailed narratives exist behind these decisions; this repository prioritizes structure and clarity over extended storytelling.
+
+For a more explicit statement of intent and approach, see:
+
+- **How I think about regulated enterprise voice projects**  
+  → [`01-principles/how-i-think-about-regulated-voice.md`](01-principles/how-i-think-about-regulated-voice.md)
 
 ## Operator naming
 

@@ -8,11 +8,13 @@ A recurring confusion in regulated projects:
 ## Principle
 
 Evidence packs should be:
+
 - factual (no claims)
 - read-only (no hidden changes)
 - integrity-protected (manifests, checksums)
 
 They help:
+
 - audits
 - handovers
 - architecture reviews
