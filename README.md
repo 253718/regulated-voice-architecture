@@ -25,6 +25,11 @@ My technical portfolio repo focuses on **proof** (artefacts, evidence packs, rea
 
 If you want technical proof, see `04-proof-links/01-technical-portfolio-entrypoints.md`.
 
+## Scope and intent
+
+All content in this repository is derived from real delivery work.
+The current focus is on architectural decisions and operating principles rather than extended storytelling.
+
 ## Operator naming
 
 This repo may reference Monaco Telecom where the **operator-managed SBCaaS model** is the architectural decision driver.
