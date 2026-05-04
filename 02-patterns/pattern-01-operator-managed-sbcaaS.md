@@ -1,51 +1,99 @@
-# Pattern 01 — Operator-managed SBCaaS (Monaco Telecom)
+## Pattern 01 — Operator-managed SBCaaS
 
-## Context
+### Context
 
-You need Direct Routing and PSTN services in a geography where the operator provides **SBC as a Service**.
+A regulated or service-oriented organization needs Microsoft Teams Phone with Direct Routing in a geography where the PSTN operator provides the SBC layer as a managed service.
 
-## Decision
+This pattern is common when local numbering, carrier constraints or regional operating models make pure Operator Connect insufficient or unavailable.
 
-Use operator-managed SBCaaS for Direct Routing.
-Keep the integrator/customer scope focused on tenant configuration.
+The key point is that the SBC exists, but it is not owned or operated by the customer or integrator.
 
-## Trade-offs
+### Problem
 
-**Pros**
-- reduced infrastructure ownership (no customer SBC platform to run)
-- operator HA/SLA on the SBC layer
+Operator-managed SBCaaS can look deceptively simple from the Teams tenant side.
 
-**Cons**
-- boundary incidents (tenant vs operator) are common
-- you must document responsibilities precisely
+The main risk is not the routing configuration itself. The main risk is unclear responsibility boundaries:
 
-## Operating notes
+- Teams policies and routes are owned on the tenant side;
+- SBC hardening, lifecycle and availability are owned by the operator;
+- PSTN reachability is owned by the operator;
+- endpoint and network symptoms may still appear first to customer support;
+- incident triage can become slow if the boundary is not documented.
 
-- define escalation path to the operator
-- keep a minimal set of routine checks (SBC presence, test calls, AA/CQ behavior)
+### Decision
 
-## Evidence expectations
+Use operator-managed SBCaaS for Direct Routing when the operator model is the best fit for the numbering domain and operational context.
 
-- tenant-side routing snapshot (policies/routes/dial plans)
-- responsibility split document
-- handover checklist
+Keep the customer / integrator scope focused on:
 
+- tenant-side SBC declaration;
+- voice routes and routing policies;
+- dial plans and normalization;
+- user voice enablement;
+- Auto Attendants and Call Queues;
+- handover and operational evidence.
 
-## Diagram (responsibility boundary)
+Do not present the solution as if the customer owns the SBC platform.
 
-```mermaid
-flowchart LR
-  User[Users / Endpoints] -->|Teams client| Teams[Microsoft Teams Cloud]
-  Teams -->|SIP/TLS + SRTP| SBCaaS[Operator-managed SBCaaS
-(Monaco Telecom)]
-  SBCaaS -->|PSTN| PSTN[(PSTN)]
+### Trade-offs
 
-  classDef tenant fill:#e8f0fe,stroke:#3b82f6,color:#111827;
-  classDef operator fill:#ecfdf5,stroke:#10b981,color:#111827;
+**Benefits**
 
-  note1["Tenant scope: routes, policies, dial plans, AA/CQ, user enablement"]:::tenant
-  note2["Operator scope: SBC hardening, HA/SLA, trunk, PSTN"]:::operator
+- reduced infrastructure ownership;
+- no customer-run SBC platform to patch, harden or monitor;
+- operator ownership of SBC availability and PSTN integration;
+- simpler platform lifecycle for the customer.
 
-  Teams --- note1
-  SBCaaS --- note2
-```
+**Costs / constraints**
+
+- incidents often require coordination with the operator;
+- tenant-side visibility into SBC internals may be limited;
+- monitoring boundaries must be explicit;
+- design documentation must clearly separate tenant, SBC and PSTN ownership.
+
+### Operating notes
+
+Support teams need a clear diagnostic split:
+
+1. Validate Teams user / service configuration.
+2. Validate routing policy and dial plan assignment.
+3. Validate Auto Attendant / Call Queue behavior when relevant.
+4. Test Teams-to-Teams behavior to separate endpoint/client issues from PSTN issues.
+5. Test outbound and inbound PSTN flows.
+6. If signaling, PSTN reachability, media path or trunk behavior is suspected, escalate to the operator with a precise symptom package.
+
+The support model should document what can be checked internally and what requires operator intervention.
+
+### Evidence expectations
+
+A clean delivery should include:
+
+- tenant-side routing snapshot;
+- SBC FQDN / trusted SBC declaration summary;
+- voice routing policy overview;
+- dial plan and normalization overview;
+- call flow inventory for AA/CQ services;
+- operator responsibility boundary statement;
+- support escalation path;
+- test evidence for inbound and outbound PSTN flows;
+- handover checklist.
+
+### Anti-patterns
+
+Avoid:
+
+- describing the SBC as customer-managed when it is not;
+- accepting vague operator / customer boundaries;
+- delivering Direct Routing without an escalation package;
+- troubleshooting every PSTN symptom as a Teams tenant issue;
+- omitting AA/CQ flows from the routing evidence;
+- promising resilience that belongs to the operator contract but is not documented.
+
+### Acceptance criteria
+
+- The operator boundary is documented.
+- Tenant-side routing objects are captured in evidence.
+- Inbound and outbound PSTN calls are tested.
+- AA/CQ flows using the SBCaaS path are tested where applicable.
+- Support knows when to investigate internally and when to escalate to the operator.
+- The handover package identifies owner, scope and escalation trigger for each layer.
