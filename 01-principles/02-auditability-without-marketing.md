@@ -1,6 +1,7 @@
 # Auditability (without marketing)
 
 Auditability is frequently misinterpreted as either:
+
 - "we have logs" or
 - "we are compliant"
 
@@ -9,6 +10,7 @@ Neither is sufficient.
 ## Principle
 
 Treat auditability as a **design input**:
+
 - define what evidence must exist
 - define how evidence is produced (read-only where possible)
 - define how evidence is packaged and handed over

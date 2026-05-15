@@ -1,12 +1,12 @@
-## Pattern 04 — Legal recording as a chain
+# Pattern 04 — Legal recording as a chain
 
-### Context
+## Context
 
 Regulated users require call recording for governance, legal, regulatory or business-control reasons.
 
 In Teams Phone environments, recording is not a single switch. It is an end-to-end chain involving policy targeting, capture, access, export, retention and operational monitoring.
 
-### Problem
+## Problem
 
 Recording projects often focus too narrowly on whether a call is captured once during testing.
 
@@ -20,7 +20,7 @@ The real risks are chain risks:
 - retention may be misunderstood;
 - support may not know whether an incident belongs to Teams, the recording vendor, storage or policy assignment.
 
-### Decision
+## Decision
 
 Treat legal recording as an end-to-end service chain.
 
@@ -35,23 +35,23 @@ Design and validate:
 
 Do not claim compliance from technical evidence alone. Evidence supports review, but compliance remains a governance outcome.
 
-### Trade-offs
+## Trade-offs
 
-**Benefits**
+### Benefits
 
 - fewer ambiguous recording incidents;
 - clearer audit support;
 - better support readiness;
 - stronger separation between technical evidence and compliance claims.
 
-**Costs / constraints**
+### Costs / constraints
 
 - more validation effort before go-live;
 - more stakeholders involved;
 - requires coordination with recording vendor and storage owners;
 - support must understand several systems rather than only Teams.
 
-### Operating notes
+## Operating notes
 
 Support needs a first-line recording triage path:
 
@@ -65,7 +65,7 @@ Support needs a first-line recording triage path:
 
 The chain must be tested as a chain, not as isolated components.
 
-### Evidence expectations
+## Evidence expectations
 
 A clean delivery should include:
 
@@ -79,7 +79,7 @@ A clean delivery should include:
 - incident triage runbook;
 - handover notes for support.
 
-### Anti-patterns
+## Anti-patterns
 
 Avoid:
 
@@ -90,7 +90,7 @@ Avoid:
 - omitting the recording chain from RUN handover;
 - mixing technical evidence with legal sign-off language.
 
-### Acceptance criteria
+## Acceptance criteria
 
 - Recorded populations are documented.
 - Policy assignment evidence exists.

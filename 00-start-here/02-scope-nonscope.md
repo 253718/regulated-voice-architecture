@@ -21,6 +21,7 @@
 
 Not every site, country, or use-case deserves the same complexity.
 A consistent pattern in real work is **proportional architecture**:
+
 - high-value sites get stronger local termination and resilience
 - low-criticality sites may accept centralization to reduce operational load
 

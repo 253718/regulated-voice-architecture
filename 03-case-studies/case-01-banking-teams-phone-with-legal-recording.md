@@ -3,6 +3,7 @@
 ## Context
 
 A Monaco-based banking environment required a Teams Phone migration with:
+
 - PSTN via Direct Routing
 - operator-managed SBCaaS
 - legal recording for regulated users
@@ -34,6 +35,7 @@ A Monaco-based banking environment required a Teams Phone migration with:
 ## Proof links
 
 See `04-proof-links/01-technical-portfolio-entrypoints.md` for:
+
 - evidence pack examples
 - DAT snippet examples
 - read-only export patterns

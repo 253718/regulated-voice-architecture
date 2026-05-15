@@ -1,6 +1,6 @@
-## Pattern 02 — Hybrid: Operator Connect + Direct Routing
+# Pattern 02 — Hybrid: Operator Connect + Direct Routing
 
-### Context
+## Context
 
 A single organization uses Microsoft Teams Phone across several numbering domains or countries.
 
@@ -8,7 +8,7 @@ Some users can be served through Operator Connect. Others require Direct Routing
 
 This pattern applies when one tenant must support both models at the same time.
 
-### Problem
+## Problem
 
 Hybrid Teams Phone models are powerful, but they can become difficult to operate when routing intent is not explicit.
 
@@ -20,7 +20,7 @@ Typical risks include:
 - support teams not knowing whether an issue belongs to Operator Connect, Direct Routing, SBCaaS or the tenant;
 - migration waves mixing countries or numbering domains without clear rollback boundaries.
 
-### Decision
+## Decision
 
 Adopt a hybrid tenant model with explicit domain separation:
 
@@ -32,23 +32,23 @@ Adopt a hybrid tenant model with explicit domain separation:
 
 The goal is not to hide complexity. The goal is to make the complexity readable and supportable.
 
-### Trade-offs
+## Trade-offs
 
-**Benefits**
+### Benefits
 
 - fits real-world country and operator constraints;
 - avoids forcing one PSTN model everywhere;
 - allows simpler Operator Connect operation where possible;
 - preserves Direct Routing flexibility where required.
 
-**Costs / constraints**
+### Costs / constraints
 
 - more policies and validation paths;
 - stronger naming discipline required;
 - support must understand two operating models;
 - evidence must distinguish Operator Connect and Direct Routing flows.
 
-### Operating notes
+## Operating notes
 
 The tenant should be readable by population:
 
@@ -60,7 +60,7 @@ The tenant should be readable by population:
 
 For incidents, support should first identify the affected population and PSTN path before troubleshooting deeply.
 
-### Evidence expectations
+## Evidence expectations
 
 A clean delivery should include:
 
@@ -73,7 +73,7 @@ A clean delivery should include:
 - test evidence per country or numbering domain;
 - rollback assumptions per wave.
 
-### Anti-patterns
+## Anti-patterns
 
 Avoid:
 
@@ -83,7 +83,7 @@ Avoid:
 - leaving AA/CQ service numbers outside the numbering domain inventory;
 - creating migration waves that mix incompatible rollback boundaries.
 
-### Acceptance criteria
+## Acceptance criteria
 
 - Each user population has a documented PSTN model.
 - Each numbering domain has a documented routing intent.

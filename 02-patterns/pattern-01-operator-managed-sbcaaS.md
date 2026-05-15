@@ -1,6 +1,6 @@
-## Pattern 01 — Operator-managed SBCaaS
+# Pattern 01 — Operator-managed SBCaaS
 
-### Context
+## Context
 
 A regulated or service-oriented organization needs Microsoft Teams Phone with Direct Routing in a geography where the PSTN operator provides the SBC layer as a managed service.
 
@@ -8,7 +8,7 @@ This pattern is common when local numbering, carrier constraints or regional ope
 
 The key point is that the SBC exists, but it is not owned or operated by the customer or integrator.
 
-### Problem
+## Problem
 
 Operator-managed SBCaaS can look deceptively simple from the Teams tenant side.
 
@@ -20,7 +20,7 @@ The main risk is not the routing configuration itself. The main risk is unclear 
 - endpoint and network symptoms may still appear first to customer support;
 - incident triage can become slow if the boundary is not documented.
 
-### Decision
+## Decision
 
 Use operator-managed SBCaaS for Direct Routing when the operator model is the best fit for the numbering domain and operational context.
 
@@ -35,23 +35,23 @@ Keep the customer / integrator scope focused on:
 
 Do not present the solution as if the customer owns the SBC platform.
 
-### Trade-offs
+## Trade-offs
 
-**Benefits**
+## Benefits
 
 - reduced infrastructure ownership;
 - no customer-run SBC platform to patch, harden or monitor;
 - operator ownership of SBC availability and PSTN integration;
 - simpler platform lifecycle for the customer.
 
-**Costs / constraints**
+## Costs / constraints
 
 - incidents often require coordination with the operator;
 - tenant-side visibility into SBC internals may be limited;
 - monitoring boundaries must be explicit;
 - design documentation must clearly separate tenant, SBC and PSTN ownership.
 
-### Operating notes
+## Operating notes
 
 Support teams need a clear diagnostic split:
 
@@ -64,7 +64,7 @@ Support teams need a clear diagnostic split:
 
 The support model should document what can be checked internally and what requires operator intervention.
 
-### Evidence expectations
+## Evidence expectations
 
 A clean delivery should include:
 
@@ -78,7 +78,7 @@ A clean delivery should include:
 - test evidence for inbound and outbound PSTN flows;
 - handover checklist.
 
-### Anti-patterns
+## Anti-patterns
 
 Avoid:
 
@@ -89,7 +89,7 @@ Avoid:
 - omitting AA/CQ flows from the routing evidence;
 - promising resilience that belongs to the operator contract but is not documented.
 
-### Acceptance criteria
+## Acceptance criteria
 
 - The operator boundary is documented.
 - Tenant-side routing objects are captured in evidence.

@@ -3,6 +3,7 @@
 I design and deliver **Microsoft Teams Phone / Direct Routing** solutions for **regulated enterprise environments** (banking and institutional clients).
 
 The distinguishing focus is not "admin tasks". The focus is **service design maturity**:
+
 - clear responsibility boundaries (tenant vs operator vs customer network)
 - auditability as a design input
 - delivery discipline (BUILD → RUN continuity)

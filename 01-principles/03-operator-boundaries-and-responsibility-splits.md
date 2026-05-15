@@ -21,10 +21,12 @@ Operator models shape voice architecture more than many Teams settings do.
 ## Why responsibility splits matter
 
 Most incidents are "boundary incidents":
+
 - symptom appears in Teams
 - cause sits on SBC, operator PSTN, customer network, or endpoint
 
 A robust design makes boundaries explicit:
+
 - which flows exist (and which do not)
 - what monitoring is expected
 - escalation triggers

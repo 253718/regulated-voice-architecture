@@ -1,6 +1,6 @@
-## Pattern 06 — Teams Phone receptionist flow with Common Area Phones
+# Pattern 06 — Teams Phone receptionist flow with Common Area Phones
 
-### Context
+## Context
 
 A service-oriented or regulated organization needs to expose a main reception number while distributing calls to one or more shared physical Teams phones used by front-desk or reception agents.
 
@@ -10,12 +10,13 @@ The reception service is not just a phone on a desk. It is a small voice service
 - schedule and exception handling;
 - queue-based distribution;
 - shared endpoint identities;
+- Common Area Phone policy and expected shared-device interface;
 - overflow and timeout behavior;
 - clear BUILD → RUN ownership.
 
 This pattern applies when reception endpoints are delivered through Microsoft Teams Phone with Auto Attendants, Call Queues, Resource Accounts and Common Area Phone-style accounts.
 
-### Problem
+## Problem
 
 A common implementation shortcut is to assign direct public numbers to every reception phone and let each endpoint behave like an independent line.
 
@@ -27,7 +28,7 @@ That creates avoidable operational ambiguity:
 - support teams cannot easily tell whether the issue is the entry point, the queue, the shared account, the physical phone, or the PSTN/operator boundary;
 - reporting may show endpoint accounts rather than the real people physically handling the desk.
 
-### Decision
+## Decision
 
 Model the reception desk as a service entry flow:
 
@@ -46,10 +47,11 @@ Use:
 - **Call Queue** for distribution to shared reception endpoints;
 - **Resource Accounts** for the Auto Attendant and Call Queue identities;
 - **Common Area Phone / shared device accounts** for physical Teams phones;
+- **Teams IP Phone Policy** for Common Area Phone sign-in mode and the expected minimal shared-device interface;
 - **no direct public DID on shared reception phones by default**, unless a specific business requirement justifies it;
 - explicit timeout and overflow behavior before handover to RUN.
 
-### Reference call flow
+## Reference call flow
 
 ```mermaid
 flowchart TD
@@ -63,9 +65,9 @@ flowchart TD
     CQ2 -->|Timeout / no answer| Return[Return / alternate handling]
 ```
 
-### Design decisions
+## Design decisions
 
-#### Decision 1 — Assign the public number to the service entry point
+### Decision 1 — Assign the public number to the service entry point
 
 The public number should represent the reception service, not an individual desk phone.
 
@@ -76,15 +78,21 @@ This makes the service easier to explain, test and support:
 - changes to desk phones do not change the public entry point;
 - support can start diagnostics from the service object.
 
-#### Decision 2 — Keep Resource Accounts and endpoint accounts separate
+### Decision 2 — Keep Resource Accounts and endpoint accounts separate
 
 Resource Accounts represent Teams Phone service objects such as Auto Attendants and Call Queues.
 
 Common Area Phone / shared device accounts represent physical endpoints used by reception desks.
 
-Do not use a Resource Account as a sign-in identity for a physical phone. Do not use a personal user account for a shared reception phone unless there is a deliberate and documented reason.
+Do not use a Resource Account as a sign-in identity for a physical phone.
 
-#### Decision 3 — Do not assign direct public numbers to shared reception phones by default
+Do not use a personal user account for a shared reception phone unless there is a deliberate and documented reason.
+
+Shared endpoint accounts should receive a Teams IP Phone Policy configured for Common Area Phone sign-in mode so that the physical Teams phone exposes the expected minimal shared-device interface.
+
+The required license model for shared device accounts must be validated and documented before production handover.
+
+### Decision 3 — Do not assign direct public numbers to shared reception phones by default
 
 The shared phones receive calls through the Call Queue.
 
@@ -96,7 +104,7 @@ If outbound PSTN calls are required from shared reception accounts, the presente
 - operator/SBC treatment when required;
 - or another approved CLI model.
 
-#### Decision 4 — Make timeout and overflow explicit
+### Decision 4 — Make timeout and overflow explicit
 
 Reception flows are often where user experience problems appear first.
 
@@ -108,7 +116,7 @@ Before handover, the design must define:
 - whether overflow returns to the main queue, routes to another queue, routes to another site, or plays a message;
 - whether a loop is possible and how it is prevented.
 
-#### Decision 5 — Treat physical phones as RUN assets
+### Decision 5 — Treat physical phones as RUN assets
 
 Each Teams phone must have an operational identity:
 
@@ -116,6 +124,8 @@ Each Teams phone must have an operational identity:
 - license;
 - location / desk;
 - device model;
+- Teams IP Phone Policy;
+- expected shared-device phone interface;
 - sign-in state;
 - queue membership;
 - support owner;
@@ -123,7 +133,7 @@ Each Teams phone must have an operational identity:
 
 The service is not delivered only when the call works once. It is delivered when support can diagnose and restore it.
 
-### Operating notes
+## Operating notes
 
 Support needs a short and reliable diagnostic path:
 
@@ -131,13 +141,16 @@ Support needs a short and reliable diagnostic path:
 2. Identify the service object: Auto Attendant, primary Call Queue, overflow Call Queue.
 3. Validate schedule / holiday / exception behavior.
 4. Validate Call Queue membership and routing method.
-5. Validate shared device account state.
-6. Validate physical phone sign-in and health in Teams Admin Center.
+5. Validate shared device account state, license and Teams IP Phone Policy.
+6. Validate physical phone sign-in, expected interface and health in Teams Admin Center.
 7. Test a direct Teams call to the shared endpoint account.
 8. Test a call through the Call Queue.
-9. If the issue is PSTN, caller ID, media path or carrier-side routing, escalate using the operator boundary.
+9. Validate outbound caller ID behavior if outbound PSTN calling is allowed.
+10. If the issue is PSTN, caller ID, media path or carrier-side routing, escalate using the operator boundary.
 
-### Evidence expectations
+RUN ownership should distinguish Teams Phone configuration, physical device support, site/network support and PSTN/operator escalation.
+
+## Evidence expectations
 
 A clean handover should include:
 
@@ -146,43 +159,49 @@ A clean handover should include:
 - Call Queue summary;
 - Resource Account list;
 - Common Area Phone / shared endpoint account list;
+- Teams IP Phone Policy assigned to shared endpoint accounts;
 - queue membership summary;
 - device inventory;
 - license summary;
 - test evidence;
 - timeout / overflow decisions;
+- outbound caller ID decision, if outbound PSTN calling is allowed;
 - known limitations;
 - RUN ownership notes.
 
-### Acceptance criteria
+## Acceptance criteria
 
 Minimum acceptance criteria:
 
 - inbound calls to the public reception number reach the Auto Attendant;
 - open-hours routing reaches the reception Call Queue;
 - shared Teams phones ring according to the selected routing method;
+- shared endpoint accounts have the expected Teams IP Phone Policy and Common Area Phone sign-in mode;
+- the physical phone exposes the expected shared-device interface;
 - no-answer / busy / timeout behavior matches the documented design;
+- overflow behavior is tested and loop risk is documented or prevented;
 - closed-hours behavior matches the validated business message;
 - shared phone accounts have no direct DID unless explicitly documented;
-- outbound caller ID behavior is documented if outbound PSTN calling is allowed;
+- outbound caller ID behavior is tested and documented if outbound PSTN calling is allowed;
 - phones are visible, signed in and operational;
 - support has enough information to diagnose the service after handover.
 
-### Anti-patterns
+## Anti-patterns
 
 Avoid:
 
 - assigning direct public numbers to every reception phone without a documented reason;
 - using personal user accounts for shared reception desks;
 - mixing Resource Account purpose and physical endpoint sign-in purpose;
+- signing physical Teams phones in without documenting the required Teams IP Phone Policy and expected Common Area Phone interface;
 - delivering Auto Attendants and Call Queues without test evidence;
 - configuring overflow without documenting loop risk;
 - handing over to RUN without a device/account/queue mapping;
 - claiming that the service is complete because one inbound call succeeded.
 
-### Trade-offs
+## Trade-offs
 
-**Benefits**
+### Benefits
 
 - clearer service ownership;
 - better operational readability;
@@ -190,14 +209,18 @@ Avoid:
 - reduced dependency on physical phone replacement events;
 - cleaner handover evidence.
 
-**Costs / constraints**
+### Costs / constraints
 
 - requires disciplined naming and inventory;
 - requires explicit caller ID design for outbound calls from shared accounts;
+- requires validation of the shared-device account license model;
+- requires validation of Teams IP Phone Policy and expected Common Area Phone interface;
 - requires testing of queue behavior, not only phone sign-in;
 - reporting may identify the shared endpoint account rather than the person physically present at the desk.
 
-### Proof links
+Where individual accountability is required, shared endpoint reporting may be insufficient and an alternative operating model should be assessed.
+
+## Proof links
 
 Technical proof artefacts for this pattern should live in the public technical portfolio rather than in this narrative repository.
 

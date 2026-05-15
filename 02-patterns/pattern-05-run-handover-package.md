@@ -1,12 +1,12 @@
-## Pattern 05 — RUN handover package
+# Pattern 05 — RUN handover package
 
-### Context
+## Context
 
 Teams Phone services are inherited by support teams after go-live.
 
 In regulated or service-oriented environments, a voice service is not complete when calls work during acceptance testing. It is complete when support can understand, monitor, change and restore it.
 
-### Problem
+## Problem
 
 Many voice deliveries create operational ambiguity after go-live:
 
@@ -19,7 +19,7 @@ Many voice deliveries create operational ambiguity after go-live:
 
 This creates fragile operations even when the technical build was correct.
 
-### Decision
+## Decision
 
 Standardize a RUN handover package for voice projects.
 
@@ -37,11 +37,13 @@ The package should describe:
 
 The handover package is part of the architecture, not an administrative afterthought.
 
-### Package contents
+## Package contents
 
 A minimum package should include:
 
 - service overview;
+- as-built DAT or architecture handover;
+- DEX / RUN operations guide;
 - number and call-flow inventory;
 - Auto Attendant / Call Queue inventory;
 - routing policy and dial plan overview;
@@ -56,9 +58,9 @@ A minimum package should include:
 - known limitations and accepted risks;
 - handover sign-off checklist.
 
-### Trade-offs
+## Trade-offs
 
-**Benefits**
+### Benefits
 
 - reduces post-go-live dependency on the build team;
 - improves incident localization;
@@ -66,14 +68,14 @@ A minimum package should include:
 - supports audits and service reviews;
 - creates a repeatable delivery standard.
 
-**Costs / constraints**
+### Costs / constraints
 
 - requires time before go-live;
 - requires disciplined evidence capture;
 - can feel heavy for small scopes unless proportionality is applied;
 - must be maintained when the service changes.
 
-### Operating notes
+## Operating notes
 
 The handover package should answer practical support questions:
 
@@ -88,7 +90,11 @@ The handover package should answer practical support questions:
 
 A good package prevents support from having to reverse-engineer the service during an incident.
 
-### Evidence expectations
+The DAT and DEX should not duplicate each other.
+The DAT records what was delivered.
+The DEX records how to operate and change it safely over time.
+
+## Evidence expectations
 
 A clean handover should include:
 
@@ -96,12 +102,14 @@ A clean handover should include:
 - archived configuration snapshot;
 - test evidence;
 - runbook catalog;
+- DAT / as-built architecture document;
+- DEX / RUN operations document;
 - support owner mapping;
 - operator escalation information;
 - known limitations;
 - change process notes.
 
-### Anti-patterns
+## Anti-patterns
 
 Avoid:
 
@@ -112,7 +120,7 @@ Avoid:
 - creating runbooks that only the build engineer understands;
 - publishing tenant-changing procedures in public artefacts.
 
-### Acceptance criteria
+## Acceptance criteria
 
 - Support can identify service objects and ownership boundaries.
 - Routine changes are documented.
@@ -120,3 +128,14 @@ Avoid:
 - Evidence from delivery is packaged and accessible.
 - Accepted risks and known limitations are documented.
 - The build team can disengage without leaving hidden knowledge behind.
+
+## Proof links
+
+Technical proof artefacts for this pattern should live in the public technical portfolio rather than in this narrative repository.
+Recommended portfolio entry points:
+
+- `docs/templates/dat-teams-phone-as-built.md`
+- `docs/templates/dex-teams-phone-run-operations.md`
+- `docs/templates/handover-run.md`
+- `docs/templates/runbook-catalog.md`
+- generated `DAT-snippets.md` and evidence packs where applicable.

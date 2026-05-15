@@ -2,6 +2,7 @@
 
 In regulated voice work, the primary failure mode is not "configuration".
 It is **operational ambiguity** after go-live:
+
 - unclear escalation boundaries
 - missing monitoring scopes
 - missing runbooks and validation steps
@@ -9,6 +10,7 @@ It is **operational ambiguity** after go-live:
 ## Principle
 
 Design must include the operating model:
+
 - who owns what (tenant, operator, customer network, recording vendor)
 - what is monitored and by whom
 - which runbooks exist and what evidence is captured
@@ -28,6 +30,7 @@ Design must include the operating model:
 
 The service is not "delivered" when calls work once.
 It is delivered when a support team can:
+
 - detect a problem
 - localize the boundary
 - execute the next action without guesswork
